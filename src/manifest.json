@@ -1,0 +1,24 @@
+{
+  "manifest_version": 2,
+  "name": "Request Delay Simulator",
+  "version": "1.0.0",
+  "description": "Simula lentidão de rede por regras de URL (exact/regex).",
+  "permissions": [
+    "storage",
+    "webRequest",
+    "webRequestBlocking",
+    "<all_urls>"
+  ],
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "browser_action": {
+    "default_title": "Request Delay",
+    "default_popup": "popup/popup.html"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "request-delay-simulator@example.com"
+    }
+  }
+}

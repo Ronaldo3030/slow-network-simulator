@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Request Delay Simulator</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <main class="panel">
+      <header class="panel-header section">
+        <div>
+          <h1>Request Delay</h1>
+          <p>Simular latência de rede por URL.</p>
+        </div>
+        <label class="switch-area" title="Liga ou pausa toda a extensão">
+          <span id="global-status" class="status-pill">Ativo</span>
+          <input id="global-enabled" type="checkbox" checked />
+          <span class="switch"></span>
+        </label>
+      </header>
+
+      <section class="section">
+        <h2>Regras por URL</h2>
+        <form id="rule-form" class="rule-form">
+          <div class="inline-row">
+            <select id="rule-type">
+              <option value="exact">URL exata</option>
+              <option value="regex">Regex</option>
+            </select>
+            <input id="rule-value" type="text" placeholder="https://api.exemplo.com/v1/users" />
+            <button type="submit" class="add-btn" aria-label="Adicionar regra">+</button>
+          </div>
+          <div class="inline-row">
+            <input id="rule-delay" type="number" min="1" placeholder="Delay da regra (ms)" required />
+            <span class="ms-label">ms</span>
+          </div>
+          <p id="form-error" class="error"></p>
+        </form>
+      </section>
+
+      <section class="section">
+        <div class="section-title-row">
+          <h2>Lista de Regras</h2>
+          <span id="rules-count" class="helper"></span>
+        </div>
+        <div id="rules-list" class="rules-list"></div>
+      </section>
+
+      <footer class="panel-footer section">
+        <span><strong id="active-rules">0</strong> regras ativas</span>
+        <span><strong id="affected-requests">0</strong> requisições afetadas</span>
+        <button id="reset-counter" class="link-btn" type="button">Limpar contador</button>
+      </footer>
+    </main>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
