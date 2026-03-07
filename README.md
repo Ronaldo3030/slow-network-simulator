@@ -64,3 +64,7 @@ Saída em `dist/`.
 - Sem coleta de dados.
 - Sem código remoto.
 - Persistência apenas em `browser.storage.local`.
+
+## Licença
+
+MIT
