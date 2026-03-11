@@ -68,3 +68,6 @@ Saída em `dist/`.
 ## Licença
 
 MIT
+
+
+https://addons.mozilla.org/addon/request-delay-simulator/
