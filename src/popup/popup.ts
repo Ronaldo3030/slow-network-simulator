@@ -249,16 +249,12 @@ form!.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   const delayRaw = ruleDelayInput!.value.trim();
-  if (!delayRaw) {
-    setError("Informe o delay da regra em ms.");
-    return;
-  }
 
   const payload = {
     type: "ADD_RULE",
     ruleType: ruleTypeInput!.value,
     value: ruleValueInput!.value,
-    delayInput: delayRaw
+    delayInput: delayRaw || "2000"
   };
 
   const response = await sendMessage(payload);
@@ -281,5 +277,5 @@ resetCounterBtn!.addEventListener("click", async () => {
   applyState(response);
 });
 
-updateRulePlaceholder("exact");
+updateRulePlaceholder("regex");
 void refresh();

@@ -26,13 +26,13 @@
           <div class="inline-row">
             <select id="rule-type">
               <option value="exact">URL exata</option>
-              <option value="regex">Regex</option>
+              <option value="regex" selected>Regex</option>
             </select>
             <input id="rule-value" type="text" placeholder="https://api.exemplo.com/v1/users" />
             <button type="submit" class="add-btn" aria-label="Adicionar regra">+</button>
           </div>
           <div class="inline-row">
-            <input id="rule-delay" type="number" min="1" placeholder="Delay da regra (ms)" required />
+            <input id="rule-delay" type="number" min="1" placeholder="Delay da regra (ms)" />
             <span class="ms-label">ms</span>
           </div>
           <p id="form-error" class="error"></p>
