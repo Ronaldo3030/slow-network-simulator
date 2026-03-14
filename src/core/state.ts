@@ -1,4 +1,4 @@
-import { DEFAULT_SETTINGS, MAX_DELAY_MS, MIN_DELAY_MS } from "./defaults";
+import { DEFAULT_SETTINGS, MIN_DELAY_MS } from "./defaults";
 import type { DelayRule, ExtensionSettings, RuleType } from "./types";
 import { isRuleValid } from "./matcher";
 import { validateDelay, validateNewRule } from "./validation";
@@ -29,7 +29,7 @@ function sanitizeRule(candidate: Partial<DelayRule>, index: number): DelayRule {
   const type: RuleType = candidate.type === "regex" ? "regex" : "exact";
   const value = typeof candidate.value === "string" ? candidate.value : "";
   const parsedDelay = Number.parseInt(String(candidate.delayMs ?? DEFAULT_SETTINGS.globalDelayMs), 10);
-  const safeDelay = Number.isFinite(parsedDelay) && parsedDelay >= MIN_DELAY_MS && parsedDelay <= MAX_DELAY_MS
+  const safeDelay = Number.isFinite(parsedDelay) && parsedDelay >= MIN_DELAY_MS
     ? parsedDelay
     : DEFAULT_SETTINGS.globalDelayMs;
 
@@ -50,7 +50,7 @@ export function sanitizeSettings(candidate: unknown): ExtensionSettings {
 
   const raw = candidate as Partial<ExtensionSettings>;
   const globalDelayParsed = Number.parseInt(String(raw.globalDelayMs ?? DEFAULT_SETTINGS.globalDelayMs), 10);
-  const globalDelayMs = Number.isFinite(globalDelayParsed) && globalDelayParsed >= MIN_DELAY_MS && globalDelayParsed <= MAX_DELAY_MS
+  const globalDelayMs = Number.isFinite(globalDelayParsed) && globalDelayParsed >= MIN_DELAY_MS
     ? globalDelayParsed
     : DEFAULT_SETTINGS.globalDelayMs;
 

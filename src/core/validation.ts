@@ -1,4 +1,4 @@
-import { MAX_DELAY_MS, MIN_DELAY_MS } from "./defaults";
+import { MIN_DELAY_MS } from "./defaults";
 import type { RuleType } from "./types";
 
 export interface RuleValidationInput {
@@ -40,10 +40,6 @@ export function validateDelay(delayMs: number): string | null {
 
   if (delayMs < MIN_DELAY_MS) {
     return `Delay mínimo: ${MIN_DELAY_MS} ms.`;
-  }
-
-  if (delayMs > MAX_DELAY_MS) {
-    return `Delay máximo: ${MAX_DELAY_MS} ms.`;
   }
 
   return null;

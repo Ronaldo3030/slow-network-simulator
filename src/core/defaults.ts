@@ -3,7 +3,6 @@ import type { ExtensionSettings } from "./types";
 export const STORAGE_KEY = "requestDelaySettings";
 
 export const MIN_DELAY_MS = 1;
-export const MAX_DELAY_MS = 5000;
 
 export const DEFAULT_SETTINGS: ExtensionSettings = {
   globalEnabled: true,
