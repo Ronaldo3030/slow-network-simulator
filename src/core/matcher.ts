@@ -1,13 +1,35 @@
 import type { DelayRule, ExtensionSettings } from "./types";
 import { validateRegex } from "./validation";
 
+const regexCache = new Map<string, RegExp | null>();
+const MAX_CACHE_SIZE = 100;
+
+function getCompiledRegex(pattern: string): RegExp | null {
+  if (regexCache.has(pattern)) {
+    return regexCache.get(pattern) ?? null;
+  }
+
+  if (validateRegex(pattern) !== null) {
+    regexCache.set(pattern, null);
+    return null;
+  }
+
+  const re = new RegExp(pattern);
+  if (regexCache.size >= MAX_CACHE_SIZE) {
+    const firstKey = regexCache.keys().next().value;
+    if (firstKey !== undefined) regexCache.delete(firstKey);
+  }
+  regexCache.set(pattern, re);
+  return re;
+}
+
 export function isRuleValid(rule: DelayRule): boolean {
   if (!rule.value.trim() || rule.delayMs <= 0) {
     return false;
   }
 
   if (rule.type === "regex") {
-    return validateRegex(rule.value) === null;
+    return getCompiledRegex(rule.value) !== null;
   }
 
   return true;
@@ -22,7 +44,8 @@ export function ruleMatchesUrl(rule: DelayRule, url: string): boolean {
     return rule.value === url;
   }
 
-  return new RegExp(rule.value).test(url);
+  const re = getCompiledRegex(rule.value);
+  return re !== null && re.test(url);
 }
 
 export function findMatchingRule(url: string, rules: DelayRule[]): DelayRule | null {

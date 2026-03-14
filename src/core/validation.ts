@@ -15,14 +15,57 @@ export interface RuleValidationResult {
   normalizedValue?: string;
 }
 
+const MAX_REGEX_LENGTH = 500;
+
+function detectNestedQuantifiers(pattern: string): boolean {
+  const clean = pattern.replace(/\\./g, "");
+  const noClasses = clean.replace(/\[[^\]]*\]/g, "");
+
+  const hasQuantifier: boolean[] = [];
+  let depth = 0;
+
+  for (let i = 0; i < noClasses.length; i++) {
+    const ch = noClasses[i];
+
+    if (ch === "(") {
+      depth++;
+      hasQuantifier[depth] = false;
+    } else if (ch === ")") {
+      if (depth <= 0) continue;
+      const inner = hasQuantifier[depth];
+      depth--;
+      const next = noClasses[i + 1];
+      if (inner && (next === "+" || next === "*" || next === "{")) {
+        return true;
+      }
+      if (inner && depth > 0) {
+        hasQuantifier[depth] = true;
+      }
+    } else if ((ch === "+" || ch === "*") && depth > 0) {
+      hasQuantifier[depth] = true;
+    }
+  }
+
+  return false;
+}
+
 export function validateRegex(pattern: string): string | null {
+  if (pattern.length > MAX_REGEX_LENGTH) {
+    return `Regex muito longa (máximo: ${MAX_REGEX_LENGTH} caracteres).`;
+  }
+
   try {
     // eslint-disable-next-line no-new
     new RegExp(pattern);
-    return null;
   } catch {
     return "Regex inválida.";
   }
+
+  if (detectNestedQuantifiers(pattern)) {
+    return "Regex com quantificadores aninhados pode travar o navegador.";
+  }
+
+  return null;
 }
 
 export function validateDelay(delayMs: number): string | null {
